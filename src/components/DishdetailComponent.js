@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { LocalForm, Control, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
     const maxLength = (len) => (val) => !(val) || (val.length <= len);
     const minLength = (len) => (val) => (val) && (val.length >= len);
@@ -89,6 +90,12 @@ import { baseUrl } from '../shared/baseUrl';
     function RenderDish ( {dish} ) {
         if (dish != null){
             return(
+                <FadeTransform
+                    in
+                    transformProps={{
+                        exitTransform: 'scale(0.5) translateY(-50%)'
+                    }}
+                >
                 <Card>
                     <CardImg width="100%" src={baseUrl + dish.image} alt={dish.name}/>
                     <CardBody>
@@ -96,6 +103,7 @@ import { baseUrl } from '../shared/baseUrl';
                         <CardText>{dish.description}</CardText>
                     </CardBody>
                 </Card>
+                </FadeTransform>
             );
         }
         else
@@ -108,16 +116,20 @@ import { baseUrl } from '../shared/baseUrl';
         if(comments != null){
             const dishComments=comments.map((c)=>{
                 return(
+                    <Fade in>
                     <ul key={c.id} className="list-unstyled">
                         <li>{c.comment}</li>
                         <li>--{c.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(c.date)))}</li>
                     </ul>
+                    </Fade>
                 );
             });
             return(
                 <div>
                     <h4>Comments</h4>
-                    {dishComments}
+                    <Stagger in>
+                        {dishComments}
+                    </Stagger>
                     <CommentForm dishId={dishId} postComment={postComment} />
                 </div>
             );

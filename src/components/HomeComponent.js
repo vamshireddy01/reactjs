@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardImg, CardBody, CardText, CardTitle, CardSubtitle } from 'reactstrap';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform } from 'react-animation-components';
 
 function RenderCard( {item, isLoading, errMess} ) {
 
@@ -17,14 +18,21 @@ function RenderCard( {item, isLoading, errMess} ) {
     }
     else
         return(
-            <Card>
-                <CardImg src={baseUrl + item.image} alt={item.name} />
-                <CardBody>
-                    <CardTitle><b>{item.name}</b></CardTitle>
-                    {item.designation ? <CardSubtitle><b>{item.designation}</b></CardSubtitle> : null }
-                    <CardText>{item.description}</CardText>
-                </CardBody>
-            </Card>
+            <FadeTransform
+                in
+                transformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}
+            >
+                <Card>
+                    <CardImg src={baseUrl + item.image} alt={item.name} />
+                    <CardBody>
+                        <CardTitle><b>{item.name}</b></CardTitle>
+                        {item.designation ? <CardSubtitle><b>{item.designation}</b></CardSubtitle> : null }
+                        <CardText>{item.description}</CardText>
+                    </CardBody>
+                </Card>
+            </FadeTransform>
 
         );
 }
